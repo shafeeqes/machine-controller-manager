@@ -2,7 +2,6 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-
 // Package machine is the internal version of the API.
 package machine
 
@@ -480,6 +479,10 @@ type MachineDeploymentStrategy struct {
 	// TODO: Update this to follow our convention for oneOf, whatever we decide it
 	// to be.
 	RollingUpdate *RollingUpdateMachineDeployment
+
+	// InPlace update config params. Present only if MachineDeploymentStrategyType =
+	// InPlaceUpdate.
+	InPlaceUpdate *InPlaceUpdateMachineDeployment
 }
 
 type MachineDeploymentStrategyType string
@@ -490,6 +493,9 @@ const (
 
 	// Replace the old MCs by new one using rolling update i.e gradually scale down the old MCs and scale up the new one.
 	RollingUpdateMachineDeploymentStrategyType MachineDeploymentStrategyType = "RollingUpdate"
+
+	// InPlaceUpdateMachineDeploymentStrategyType means that the machines will be updated in in-place.
+	InPlaceUpdateMachineDeploymentStrategyType MachineDeploymentStrategyType = "InPlaceUpdate"
 )
 
 // Spec to control the desired behavior of rolling update.
@@ -518,6 +524,23 @@ type RollingUpdateMachineDeployment struct {
 	// new MC can be scaled up further, ensuring that total number of machines running
 	// at any time during the update is atmost 130% of desired machines.
 	MaxSurge *intstr.IntOrString
+}
+
+// Spec to control the desired behavior of in-place update.
+type InPlaceUpdateMachineDeployment struct {
+	// The maximum number of machines that can be unavailable during the update.
+	// Value can be an absolute number (ex: 5) or a percentage of desired machines (ex: 10%).
+	// Absolute number is calculated from percentage by rounding down.
+	// This can not be 0 if MaxSurge is 0.
+	// By default, a fixed value of 1 is used.
+	// Example: when this is set to 30%, the old MC can be scaled down to 70% of desired machines
+	// immediately when the rolling update starts. Once new machines are ready, old MC
+	// can be scaled down further, followed by scaling up the new MC, ensuring
+	// that the total number of machines available at all times during the update is at
+	// least 70% of desired machines.
+	MaxUnavailable *intstr.IntOrString
+	// Determine whether the update should be done only on label.
+	OnLabel bool
 }
 
 // MachineDeploymentStatus is the most recently observed status of the MachineDeployment.

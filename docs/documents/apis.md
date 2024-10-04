@@ -835,6 +835,65 @@ Kubernetes meta/v1.Time
 </tbody>
 </table>
 <br>
+<h3 id="machine.sapcloud.io/v1alpha1.InPlaceUpdateMachineDeployment">
+<b>InPlaceUpdateMachineDeployment</b>
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#%23machine.sapcloud.io%2fv1alpha1.MachineDeploymentStrategy">MachineDeploymentStrategy</a>)
+</p>
+<p>
+<p>Spec to control the desired behavior of in-place update.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>maxUnavailable</code>
+</td>
+<td>
+<em>
+<a href="#https%3a%2f%2fgodoc.org%2fk8s.io%2fapimachinery%2fpkg%2futil%2fintstr%23IntOrString">
+k8s.io/apimachinery/pkg/util/intstr.IntOrString
+</a>
+</em>
+</td>
+<td>
+<p>The maximum number of machines that can be unavailable during the update.
+Value can be an absolute number (ex: 5) or a percentage of desired machines (ex: 10%).
+Absolute number is calculated from percentage by rounding down.
+This can not be 0 if MaxSurge is 0.
+By default, a fixed value of 1 is used.
+Example: when this is set to 30%, the old MC can be scaled down to 70% of desired machines
+immediately when the rolling update starts. Once new machines are ready, old MC
+can be scaled down further, followed by scaling up the new MC, ensuring
+that the total number of machines available at all times during the update is at
+least 70% of desired machines.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>onLabel</code>
+</td>
+<td>
+<em>
+bool
+</em>
+</td>
+<td>
+<p>Determine whether the update should be done only on label.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
 <h3 id="machine.sapcloud.io/v1alpha1.LastOperation">
 <b>LastOperation</b>
 </h3>
@@ -1521,6 +1580,22 @@ RollingUpdateMachineDeployment
 <h2>RollingUpdate.</h2>
 <p>TODO: Update this to follow our convention for oneOf, whatever we decide it
 to be.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>inPlaceUpdate</code>
+</td>
+<td>
+<em>
+<a href="#%23machine.sapcloud.io%2fv1alpha1.InPlaceUpdateMachineDeployment">
+InPlaceUpdateMachineDeployment
+</a>
+</em>
+</td>
+<td>
+<p>InPlace update config params. Present only if MachineDeploymentStrategyType =
+InPlaceUpdate.</p>
 </td>
 </tr>
 </tbody>
