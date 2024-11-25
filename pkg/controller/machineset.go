@@ -339,7 +339,10 @@ func (c *controller) manageReplicas(ctx context.Context, allMachines []*v1alpha1
 	var activeMachines, staleMachines []*v1alpha1.Machine
 	for _, machine := range allMachines {
 		if IsMachineActive(machine) {
-			// klog.Info("Active machine: ", machine.Name)
+			if _, ok := machine.Labels[v1alpha1.LabelKeyMachineUpdateSuccessful]; ok {
+				klog.V(3).Infof("Ignoring machine %s moved to new machine set during inplace update", machine.Name)
+				continue
+			}
 			activeMachines = append(activeMachines, machine)
 		} else if IsMachineFailed(machine) {
 			staleMachines = append(staleMachines, machine)
