@@ -547,7 +547,7 @@ func (dc *controller) reconcileClusterMachineDeployment(key string) error {
 	case v1alpha1.RollingUpdateMachineDeploymentStrategyType:
 		return dc.rolloutRolling(ctx, d, machineSets, machineMap)
 	case v1alpha1.InPlaceUpdateMachineDeploymentStrategyType:
-		if !d.Spec.Strategy.InPlaceUpdate.OnLabel {
+		if d.Spec.Strategy.InPlaceUpdate.OrchestrationType == v1alpha1.OrchestrationTypeAuto {
 			return dc.rolloutInPlace(ctx, d, machineSets, machineMap)
 		}
 
