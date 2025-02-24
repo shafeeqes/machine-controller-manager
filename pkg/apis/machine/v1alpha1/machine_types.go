@@ -182,6 +182,12 @@ const (
 	// MachineOperationUpdate indicates that the operation was an update
 	MachineOperationUpdate MachineOperationType = "Update"
 
+	// MachineOperationDepedenciesUpdate indicates that the operation was a dependencies update
+	MachineOperationDepedenciesUpdate MachineOperationType = "DependenciesUpdate"
+
+	// MachineOperationDrainNode indicates that the operation was a drain node
+	MachineOperationDrainNode MachineOperationType = "DrainNode"
+
 	// MachineOperationHealthCheck indicates that the operation was a health check of node object
 	MachineOperationHealthCheck MachineOperationType = "HealthCheck"
 
